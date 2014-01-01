@@ -1,0 +1,19 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-bottom: 20px;
+
+}
+
+.child-keeper{
+    background-color: #F7C116 ;
+}
+
+.nav-tabs{
+    background-color: #3E64AC;
+}
+
+.nav-tabs li a {
+    color: #f5f5f5;
+    font-size: 14;
+
+}
