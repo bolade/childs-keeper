@@ -21,7 +21,14 @@ childCareApp.config( function(  $routeProvider){
 
 
 function TestController( $scope, $routeParams ){
+    var listing = {
+        'home' : {
+            include : 'views/panes/home.html'
+        }
+    };
+
     $scope.title = "title";
+    $scope.tab = $routeParams.tab || 'home';
     console.log( "I'm here !");
 }
 
