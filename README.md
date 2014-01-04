@@ -1,3 +1,5 @@
 childs-keeper
 =============
-HTML5 Childs keeper impl
+HTML5 Childs keeper implementation.
+
+May this project be fruitful and multiply
