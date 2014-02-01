@@ -8,12 +8,13 @@
 
 
 
-var childCareApp = angular.module('childCareApp', ['ngRoute', 'ngResource']);
+var childCareApp = angular.module('childCareApp', ['ngRoute', 'ngResource', 'mgcrea.ngStrap.modal']);
 childCareApp.config( function(  $routeProvider){
     $routeProvider
         .when('/', { controller : TestController, templateUrl : 'views/panel.html'})
         .when('/how-we-started', { templateUrl : 'views/how-we-started.html'})
         .when('/reviews', { templateUrl : 'views/reviews.html'})
+        .when('/contact', { templateUrl : 'views/contact.html'})
         .otherwise({
             redirectTo: '/'
         });
@@ -23,7 +24,10 @@ childCareApp.factory( 'Listings', function($resource){
     return $resource('/listing/:id');
 });
 childCareApp.run( function($rootScope){
-
+   $rootScope.loginModal = {
+       title : "Login",
+       content : "Sample Content"
+   };
 });
 
 
@@ -38,11 +42,9 @@ function TestController( $scope, $routeParams ){
 
     $scope.title = "title";
     $scope.tab = $routeParams.tab || 'home';
-    console.log( "I'm here !");
 }
 
 childCareApp.controller( 'ListingsController', function($scope, Listings){
-        console.log( "I'm here !");
         $scope.listings = [];
         Listings.query(
             {

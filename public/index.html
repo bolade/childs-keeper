@@ -32,7 +32,17 @@
     <div class="navbar navbar-default navbar-static-top" role="navigation" style="background-color: gold">
         <div class="container">
             <h1>Child's Keeper</h1>
-            <h3>Honest Reviews to guide your preschool decisions.</h3>
+             <div class="row">
+                 <div class="col-md-10">
+                     <h3>Honest Reviews to guide your preschool decisions.</h3>
+                 </div>
+                 <div class="col-md-2">
+                     <button type="button" class="btn btn-default btn-lg" data-container="body"
+                             data-template="/views/modal/login.html" bs-modal="loginModal" data-backdrop="false">
+                         Member Login <span class="glyphicon glyphicon-plus-sign"></span>
+                     </button>
+                 </div>
+             </div>
         </div>
         <div class="container">
             <div class="row" style="background-color: #3276b1; border-top-left-radius: 6px; border-top-right-radius: 6px">
@@ -62,9 +72,11 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="javascript/bootstrap/bootstrap.min.js"></script>
-    <script src="javascript/angular/angular.min.js"></script>
-    <script src="javascript/angular/angular-route.min.js"></script>
-    <script src="javascript/angular/angular-resource.min.js"></script>
+    <script src="javascript/angular/angular.js"></script>
+    <script src="javascript/angular/angular-route.js"></script>
+    <script src="javascript/angular/angular-resource.js"></script>
+    <script src="javascript/angular/angular-strap.js"></script>
+    <script src="javascript/angular/angular-strap.tpl.js"></script>
     <script src="javascript/app.js"></script>
   </body>
 </html>
