@@ -1,8 +1,17 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.child-contents{
+    height: 600px;
+    background-color: #e7e7e7;
+    margin-left: 134px;
+    margin-right: 133px;
+    margin-top: -25px;
+    padding: 25px 25px 25px 25px;
 }
 
-a {
-  color: #00B7FF;
+.child-inner{
+    border-radius : 6px;
+    border-color: darkgray;
+    border-width: 1px;
+    border-style: solid;
+    height: 550px;
+    padding: 5px 5px 5px 5px;
 }

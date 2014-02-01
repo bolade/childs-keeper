@@ -16,6 +16,8 @@
     <!-- Custom styles for this template -->
     <link href="stylesheets/bootstrap/jumbotron.css" rel="stylesheet">
 
+    <link href="stylesheets/style.css" rel="stylesheet">
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -27,34 +29,34 @@
   <body>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron child-keeper">
-      <div class="container">
-          <div class="row">
-              <div class="col-md-10">
-                  <h1>Child's Keeper</h1>
-                  <p>Honest Reviews to guide your preschool decisions</p>
-              </div>
-              <div class="col-md-2">
-                  <p><a class="btn btn-primary btn-lg" role="button">Member Login &raquo;</a></p>
-              </div>
-          </div>
-      </div>
+    <div class="navbar navbar-default navbar-static-top" role="navigation" style="background-color: gold">
+        <div class="container">
+            <h1>Child's Keeper</h1>
+            <h3>Honest Reviews to guide your preschool decisions.</h3>
+        </div>
+        <div class="container">
+            <div class="row" style="background-color: #3276b1; border-top-left-radius: 6px; border-top-right-radius: 6px">
+                <div class="col-md-11">
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#home">Home</a></li>
+                            <li><a href="#how-we-started">How We Started</a></li>
+                            <li><a href="#reviews">Child Center Reviews</a></li>
+                            <li><a href="#contact">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
+    <div class="child-contents">
+        <div class="child-inner">
+            <div data-ng-view>
+
+            </div>
         </div>
-        <div class="col-md-8">
-            <div ng-view></div>
-       </div>
-      </div>
-
-      <hr>
-    </div> <!-- /container -->
-
-
+    </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -62,6 +64,7 @@
     <script src="javascript/bootstrap/bootstrap.min.js"></script>
     <script src="javascript/angular/angular.min.js"></script>
     <script src="javascript/angular/angular-route.min.js"></script>
+    <script src="javascript/angular/angular-resource.min.js"></script>
     <script src="javascript/app.js"></script>
   </body>
 </html>

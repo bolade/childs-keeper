@@ -8,16 +8,25 @@
 
 
 
-var childCareApp = angular.module('childCareApp', ['ngRoute']);
+var childCareApp = angular.module('childCareApp', ['ngRoute', 'ngResource']);
 childCareApp.config( function(  $routeProvider){
     $routeProvider
         .when('/', { controller : TestController, templateUrl : 'views/panel.html'})
-        .when( '/:tab', {controller : TestController, templateUrl : 'views/panel.html'})
+        .when('/how-we-started', { templateUrl : 'views/how-we-started.html'})
+        .when('/reviews', { templateUrl : 'views/reviews.html'})
         .otherwise({
             redirectTo: '/'
         });
 
 });
+childCareApp.factory( 'Listings', function($resource){
+    return $resource('/listing/:id');
+});
+childCareApp.run( function($rootScope){
+
+});
+
+
 
 
 function TestController( $scope, $routeParams ){
@@ -31,6 +40,24 @@ function TestController( $scope, $routeParams ){
     $scope.tab = $routeParams.tab || 'home';
     console.log( "I'm here !");
 }
+
+childCareApp.controller( 'ListingsController', function($scope, Listings){
+        console.log( "I'm here !");
+        $scope.listings = [];
+        Listings.query(
+            {
+                limit:10
+            },
+            function(results){
+                $scope.listings =results ;
+            },
+            function(error){
+                console.log( error.data);
+            }
+        );
+    }
+);
+
 
 
 
