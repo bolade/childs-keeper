@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-md-9">
+        <div class="child-inner">
+            <div ui-view></div>
+        </div>
+    </div>
+    <div class="col-md-3 ">
+        <div class="child-inner-right">
+            <div data-ng-include src="'/views/top-rated.html'" data-ng-controller="ListingsController"></div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,9 @@
 .child-contents{
+    width : 1170px;
     height: 600px;
     background-color: #e7e7e7;
-    margin-left: 134px;
-    margin-right: 133px;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: -25px;
     padding: 25px 25px 25px 25px;
 }
@@ -14,4 +15,31 @@
     border-style: solid;
     height: 550px;
     padding: 5px 5px 5px 5px;
+}
+
+
+.child-inner-right{
+    border-radius : 6px;
+    border-color: darkgray;
+    border-width: 1px;
+    border-style: solid;
+    height: 350px;
+    padding: 5px 5px 5px 15px;
+}
+
+.modal-backdrop.am-fade {
+    opacity: .3;
+    transition: opacity .5s linear;
+}
+.modal-backdrop.am-fade.ng-leave {
+    opacity: .5;
+}
+.modal-backdrop.am-fade.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+.modal-backdrop.am-fade.ng-enter {
+    opacity: 0;
+}
+.modal-backdrop.am-fade.ng-enter.ng-enter-active {
+    opacity: .3;
 }

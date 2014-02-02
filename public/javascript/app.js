@@ -8,16 +8,15 @@
 
 
 
-var childCareApp = angular.module('childCareApp', ['ngRoute', 'ngResource', 'mgcrea.ngStrap.modal']);
-childCareApp.config( function(  $routeProvider){
-    $routeProvider
-        .when('/', { controller : TestController, templateUrl : 'views/panel.html'})
-        .when('/how-we-started', { templateUrl : 'views/how-we-started.html'})
-        .when('/reviews', { templateUrl : 'views/reviews.html'})
-        .when('/contact', { templateUrl : 'views/contact.html'})
-        .otherwise({
-            redirectTo: '/'
-        });
+var childCareApp = angular.module('childCareApp', ['ui.router', 'ngResource', 'mgcrea.ngStrap.modal']);
+childCareApp.config( function(  $stateProvider, $urlRouterProvider){
+    $stateProvider
+        .state( 'home'              , { url : '/home'           , templateUrl : 'views/home.html'})
+        .state( 'listing'           , { url : '/listing'           , templateUrl : 'views/listing.html'})
+        .state( 'listing.how-we-started'    , { url : '/how-we-started' , templateUrl : 'views/how-we-started.html'})
+        .state( 'listing.reviews'           , { url : '/reviews'        , templateUrl : 'views/reviews.html'})
+        .state( 'listing.contact'           , { url : '/contact'        , templateUrl : 'views/contact.html'});
+    $urlRouterProvider.otherwise('home');
 
 });
 childCareApp.factory( 'Listings', function($resource){
@@ -33,7 +32,7 @@ childCareApp.run( function($rootScope){
 
 
 
-function TestController( $scope, $routeParams ){
+function TestController( $scope ){
     var listing = {
         'home' : {
             include : 'views/panes/home.html'
@@ -41,7 +40,7 @@ function TestController( $scope, $routeParams ){
     };
 
     $scope.title = "title";
-    $scope.tab = $routeParams.tab || 'home';
+
 }
 
 childCareApp.controller( 'ListingsController', function($scope, Listings){

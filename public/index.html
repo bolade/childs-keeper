@@ -50,9 +50,9 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="#home">Home</a></li>
-                            <li><a href="#how-we-started">How We Started</a></li>
-                            <li><a href="#reviews">Child Center Reviews</a></li>
-                            <li><a href="#contact">Contact Us</a></li>
+                            <li><a ui-sref="listing.how-we-started">How We Started</a></li>
+                            <li><a ui-sref="listing.reviews">Child Center Reviews</a></li>
+                            <li><a ui-sref="listing.contact">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -61,10 +61,8 @@
     </div>
 
     <div class="child-contents">
-        <div class="child-inner">
-            <div data-ng-view>
-
-            </div>
+        <div>
+            <div ui-view></div>
         </div>
     </div>
     <!-- Bootstrap core JavaScript
@@ -77,6 +75,7 @@
     <script src="javascript/angular/angular-resource.js"></script>
     <script src="javascript/angular/angular-strap.js"></script>
     <script src="javascript/angular/angular-strap.tpl.js"></script>
+    <script src="javascript/angular/angular-ui-router.js"></script>
     <script src="javascript/app.js"></script>
   </body>
 </html>
