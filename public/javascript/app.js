@@ -8,25 +8,79 @@
 
 
 
-var childCareApp = angular.module('childCareApp', ['ui.router', 'ngResource', 'mgcrea.ngStrap.modal']);
+var childCareApp = angular.module('childCareApp', ['ui.router', 'ngResource', 'ngCookies', 'mgcrea.ngStrap']);
+childCareApp.constant( 'minimumActivityTime', 900000 );
 childCareApp.config( function(  $stateProvider, $urlRouterProvider){
     $stateProvider
-        .state( 'home'              , { url : '/home'           , templateUrl : 'views/home.html'})
-        .state( 'listing'           , { url : '/listing'           , templateUrl : 'views/listing.html'})
-        .state( 'listing.how-we-started'    , { url : '/how-we-started' , templateUrl : 'views/how-we-started.html'})
-        .state( 'listing.reviews'           , { url : '/reviews'        , templateUrl : 'views/reviews.html'})
-        .state( 'listing.contact'           , { url : '/contact'        , templateUrl : 'views/contact.html'});
+        .state( 'home'                      , { url : '/home'               , templateUrl : 'views/home.html'       , controller : HomeController } )
+        .state( 'listing'                   , { url : '/listing'            , templateUrl : 'views/listing.html'})
+        .state( 'listing.how-we-started'    , { url : '/how-we-started'     , templateUrl : 'views/how-we-started.html'})
+        .state( 'listing.reviews'           , { url : '/reviews'            , templateUrl : 'views/reviews.html'})
+        .state( 'listing.contact'           , { url : '/contact'            , templateUrl : 'views/contact.html'    , controller : ContactController })
+        .state( 'join'                      , { url : '/join'               , templateUrl : '/views/join.html'      , controller : JoinController } )
+        .state( 'login'                     , { url : '/login'              , templateUrl : 'views/login.html'      , controller : LoginController } );
     $urlRouterProvider.otherwise('home');
 
 });
 childCareApp.factory( 'Listings', function($resource){
     return $resource('/listing/:id');
 });
-childCareApp.run( function($rootScope){
+childCareApp.run( function($rootScope, $cookieStore, minimumActivityTime ){
    $rootScope.loginModal = {
        title : "Login",
        content : "Sample Content"
    };
+
+
+    $rootScope.viewModel = {
+        navState : {
+            home : { 'active' : true}
+        }
+    };
+
+
+    $rootScope.validUser = undefined;
+    $rootScope.validateUser = function(){
+        var validUser = $cookieStore.get( 'validUser');
+        if( validUser && validUser.loginDate ){
+            if( moment().diff( moment(validUser.loginDate)) > minimumActivityTime ){
+                $cookieStore.put('validUser', undefined);
+                validUser = undefined;
+                $cookieStore.put( 'validUser', undefined);
+            }
+            else{
+                validUser.loginDate = new Date();
+            }
+        }
+        else{
+            $cookieStore.put( 'validUser', undefined);
+        }
+
+        $rootScope.validUser =  validUser;
+    };
+    $rootScope.validateUser();
+
+    $rootScope.$on('$stateChangeSuccess', function(event, toState){
+        $rootScope.viewModel.navState = {};
+        $rootScope.viewModel.navState[toState.name] = { 'active' : true };
+        $rootScope.validateUser();
+
+    });
+
+    /*$rootScope.validUser = function(){
+        var validUser = $cookieStore.get( 'validUser');
+        if( validUser && validUser.loginDate ){
+              if( moment().diff( moment(validUser.loginDate)) > minimumActivityTime ){
+                  validUser = undefined;
+              }
+        }
+        else{
+             $cookieStore.put( 'validUser', undefined);
+        }
+         return validUser;
+    };*/
+
+
 });
 
 

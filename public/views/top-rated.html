@@ -1,17 +1,18 @@
-<div>
-    <div>
-        <h4>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h5>
             <span style="color: red">Top</span> Rated Child Care Centers
-        </h4>
+        </h5>
     </div>
-    <hr>
-    <ol>
-        <li data-ng-repeat="listing in listings">
-            {{listing.name}}
-        </li>
-    </ol>
-    <ul class="pager">
-        <li><a href=""><span class="glyphicon glyphicon-arrow-left"></span></a></li>
-        <li><a href=""><span class="glyphicon glyphicon-arrow-right"></span></a></li>
-    </ul>
+    <div class="panel-body">
+        <ol>
+            <li data-ng-repeat="listing in listings">
+                {{listing.name}}
+            </li>
+        </ol>
+        <ul class="pager">
+            <li><a href=""><span class="glyphicon glyphicon-arrow-left"></span></a></li>
+            <li><a href=""><span class="glyphicon glyphicon-arrow-right"></span></a></li>
+        </ul>
+    </div>
 </div>

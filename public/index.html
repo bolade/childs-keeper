@@ -16,7 +16,6 @@
     <!-- Custom styles for this template -->
     <link href="stylesheets/bootstrap/jumbotron.css" rel="stylesheet">
 
-    <link href="stylesheets/style.css" rel="stylesheet">
 
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,55 +26,52 @@
   </head>
 
   <body>
+  <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                  <li data-ng-class="viewModel.navState.home"><a ui-sref="home">Home</a></li>
+                  <li data-ng-class="viewModel.navState['listing.how-we-started']"><a ui-sref="listing.how-we-started">How We Started</a></li>
+                  <li data-ng-class="viewModel.navState['listing.reviews']"><a ui-sref="listing.reviews">Child Center Reviews</a></li>
+                  <li data-ng-class="viewModel.navState['listing.contact']"><a ui-sref="listing.contact">Contact Us</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  <li data-ng-if="validUser" class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, {{validUser.userName}}<b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="" data-ng-click="logout()">Log Out</a></li>
+                      </ul>
+                  </li>
+                  <li data-ng-if="!validUser" data-ng-class="viewModel.navState.login"><a ui-sref="login">Login</a></li>
+              </ul>
+          </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+  </nav>
+  <div class="container">
+      <div ui-view >
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="navbar navbar-default navbar-static-top" role="navigation" style="background-color: gold">
-        <div class="container">
-            <h1>Child's Keeper</h1>
-             <div class="row">
-                 <div class="col-md-10">
-                     <h3>Honest Reviews to guide your preschool decisions.</h3>
-                 </div>
-                 <div class="col-md-2">
-                     <button type="button" class="btn btn-default btn-lg" data-container="body"
-                             data-template="/views/modal/login.html" bs-modal="loginModal" data-backdrop="false">
-                         Member Login <span class="glyphicon glyphicon-plus-sign"></span>
-                     </button>
-                 </div>
-             </div>
-        </div>
-        <div class="container">
-            <div class="row" style="background-color: #3276b1; border-top-left-radius: 6px; border-top-right-radius: 6px">
-                <div class="col-md-11">
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="#home">Home</a></li>
-                            <li><a ui-sref="listing.how-we-started">How We Started</a></li>
-                            <li><a ui-sref="listing.reviews">Child Center Reviews</a></li>
-                            <li><a ui-sref="listing.contact">Contact Us</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+      </div>
+  </div>
 
-    <div class="child-contents">
-        <div>
-            <div ui-view></div>
-        </div>
-    </div>
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+    <script src="javascript/moment/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="javascript/bootstrap/bootstrap.min.js"></script>
     <script src="javascript/angular/angular.js"></script>
     <script src="javascript/angular/angular-route.js"></script>
     <script src="javascript/angular/angular-resource.js"></script>
+    <script src="javascript/angular/angular-cookies.js"></script>
     <script src="javascript/angular/angular-strap.js"></script>
     <script src="javascript/angular/angular-strap.tpl.js"></script>
     <script src="javascript/angular/angular-ui-router.js"></script>
+    <script src="javascript/controllers/LoginController.js"></script>
+    <script src="javascript/controllers/ContactController.js"></script>
+    <script src="javascript/controllers/HomeController.js"></script>
+    <script src="javascript/controllers/JoinController.js"></script>
     <script src="javascript/app.js"></script>
+
   </body>
 </html>

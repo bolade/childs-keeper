@@ -1,0 +1,47 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><h5><span style="color: red">S</span>ign Up!</h5></div>
+    <div class="panel-body">
+        <div data-ng-form="signUpForm" class="form-horizontal" role="form" novalidate>
+            <div class="form-group">
+                <label for="lastName" class="col-sm-2 control-label">Last Name</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="lastName" placeholder="Last Name" data-ng-model="viewModel.data.lastName" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="firstName" class="col-sm-2 control-label">First Name</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="firstName" placeholder="First Name" data-ng-model="viewModel.data.firstName" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="subject" class="col-sm-2 control-label">User Name</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="subject" placeholder="User Name" data-ng-model="viewModel.data.userName" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-6">
+                    <input type="password" class="form-control" id="password" placeholder="Password" data-ng-model="viewModel.data.password" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Confirm Password</label>
+                <div class="col-sm-6">
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" data-ng-model="viewModel.data.confirmPassword" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-default" data-ng-disabled="signUpForm.$invalid && viewModel.display.saving">
+                        <span data-ng-if="viewModel.display.saving">Saving...</span>
+                        <span data-ng-if="!viewModel.display.saving">Submit</span>
+                    </button>
+                    <button type="reset" class="btn btn-default" data-ng-click="reset()" data-ng-disabled="viewModel.display.saving">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
