@@ -1,4 +1,4 @@
-var JoinController = function( $scope, $http  ){
+var JoinController = function( $scope, $http, $state  ){
     $scope.viewModel = {
         data : {
 
@@ -15,6 +15,8 @@ var JoinController = function( $scope, $http  ){
        var submitModel = _( $scope.viewModel.data).omit( 'confirmPassword');
        $http.post('/users', submitModel)
            .success( function(){
+                console.log( "Saved....");
+                $state.go( 'login' );
 
            })
     }

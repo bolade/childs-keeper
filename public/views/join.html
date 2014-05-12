@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-4">
-                    <button type="submit" class="btn btn-default" data-ng-disabled="signUpForm.$invalid && viewModel.display.saving">
+                    <button type="submit" class="btn btn-default" data-ng-disabled="signUpForm.$invalid && viewModel.display.saving" data-ng-click="submit()">
                         <span data-ng-if="viewModel.display.saving">Saving...</span>
                         <span data-ng-if="!viewModel.display.saving">Submit</span>
                     </button>

@@ -15,19 +15,10 @@ var _ = require('underscore');
 var mongoClient = require('mongodb').MongoClient;
 var localStrategy = require('passport-local').Strategy;
 
-var collection = undefined;
+var collectionName = 'child-care-centers';
 var MAX_LISTINGS = 100;
 
 var mongoUrl = 'mongodb://127.0.0.1:27017/child-keeper';
-mongoClient.connect( mongoUrl, function(err, db){
-    if( err ){
-        throw err;
-    }
-    else{
-        collection = db.collection( "child-care-centers")
-    }
-});
-
 
 var app = express();
 
@@ -51,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 function findById(id, fn) {
     mongoClient.connect( mongoUrl, function(err,db){
-        collection = db.collection( "child-care-centers");
+        var collection = db.collection( collectionName );
         collection.findOne( {"_id" : id}, function( err, user){
             if( err ){
                 fn(err, null);
@@ -66,7 +57,7 @@ function findById(id, fn) {
 function findByUserName(userName, fn) {
     console.log( "find by user name mongo");
     mongoClient.connect( mongoUrl, function(err,db){
-        collection = db.collection( "users");
+        var collection = db.collection( "users");
         collection.findOne( {"userName" : userName}, function( err, user){
             console.log( "handling user query : ");
              if( err ){
@@ -126,6 +117,29 @@ app.post('/login', function(req, res, next) {
             return res.send( 200, respData );
         });
     })(req, res, next);
+});
+
+app.post('/users', function( req, res){
+   var data = req.body;
+
+    mongoClient.connect( mongoUrl, function( err, db ){
+       var collection = db.collection( "users" );
+        collection.findOne( {userName : data.userName}, function( err, doc){
+           if( err ) throw err;
+           if( doc ){
+               res.send( 403, "User already exists");
+           }
+           else{
+              data.createDate = new Date();
+              collection.insert( data, function(err){
+                  if(err) throw err;
+                  res.send( 200, "User saved.");
+
+              } );
+           }
+        });
+
+    });
 });
 
 // development only
