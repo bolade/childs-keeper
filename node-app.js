@@ -3,6 +3,7 @@
  * Module dependencies.
  */
 
+
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -11,6 +12,9 @@ var path = require('path');
 var passport =require('passport');
 var flash = require('connect-flash');
 var _ = require('underscore');
+
+var XLSX  = require('xlsx');
+
 
 var mongoClient = require('mongodb').MongoClient;
 var localStrategy = require('passport-local').Strategy;
@@ -38,6 +42,39 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+function initializeCollection(collectionName, collections, db, fn){
+    var collectionNames = _(collections).map(function(collection){
+        return collection.collectionName;
+    });
+
+    if( !_(collectionNames).contains( collectionName ) ){
+        if( fn ){
+            db.createCollection(collectionName, fn );
+        }
+        else{
+            db.createCollection(collectionName );
+        }
+
+    }
+}
+
+
+function initializeDatabase(){
+    mongoClient.connect( mongoUrl, function(err,db){
+        db.collections( function( err, collections ){
+           if( err ) throw err;
+           initializeCollection( "child-care-centers", collections, db, function(err, collection){
+               if( err ) throw err;
+               initializeCollection( "users", collections, db, function(err, collection){
+                   if( err )throw err;
+                   console.log( "Users collection added");
+               } );
+           })
+        });
+    });
+}
 
 
 function findById(id, fn) {
@@ -69,6 +106,40 @@ function findByUserName(userName, fn) {
         });
     });
 }
+
+function parseBinarySpreadSheet( fileContents ){
+    function cellRawText(cell){
+        if( cell ){
+            return cell.v;
+        }
+        else{
+            return '';
+        }
+    }
+    var recordList = undefined;
+    if( fileContents && fileContents.contents ){
+        var contentsArray = fileContents.contents.split(',');
+        var buffer = new Buffer(contentsArray[1], 'base64');
+        var obj = XLSX.read( buffer );
+        var workbook =  obj.Sheets[obj.SheetNames[0]] ;
+        var index = 2;
+        recordList = [];
+        do{
+            var record = {};
+            record.name  = cellRawText( workbook[ 'A' + index ] );
+            record.address = cellRawText( workbook[ 'B' + index ] );
+            record.city = cellRawText( workbook[ 'C' + index ] );
+            record.state = cellRawText( workbook[ 'D' + index ] );
+            record.zipCode = cellRawText( workbook[ 'E' + index ] );
+            record.phone = cellRawText( workbook[ 'F' + index ] );
+            record.webSite = cellRawText( workbook[ 'G' + index ] );
+            recordList.push( record );
+            index += 1;
+        }while(workbook['A' + index]);
+    }
+    return recordList;
+}
+
 passport.serializeUser(function(user, done) {
     done(null, user._id);
 });
@@ -151,7 +222,8 @@ app.get('/', routes.index);
 
 //app.get('/users', user.list);
 app.get('/listing', function(req, res){
-    if( collection ){
+    mongoClient.connect( mongoUrl, function( err, db ){
+        var collection = db.collection( "child-care-centers" );
         var limit = Number(req.query.limit  || MAX_LISTINGS );
         collection.find().limit(limit).toArray( function(err, results){
             if( err ){
@@ -162,12 +234,43 @@ app.get('/listing', function(req, res){
             }
         });
 
+    });
+});
+app.post('/load', function( req, res ){
+    var parsedSpreadSheet = parseBinarySpreadSheet(req.body.fileContents );
+    if( parsedSpreadSheet ){
+        mongoClient.connect( mongoUrl, function( err, db ){
+            var upload = Number( req.body.upload );
+            if( upload ){
+                 db.dropCollection( "child-care-centers", function( err, result){
+                     if( err ) throw err;
+                     db.createCollection("child-care-centers", function( err, collection ){
+                         if( err ) throw err;
+                         collection.insert( parsedSpreadSheet, function( err, result){
+                             if( err )throw err;
+                         } );
+                     })
+                 });
+            }
+            else{
+                var collection = db.collection("child-care-centers");
+                collection.insert( parsedSpreadSheet, function( err, result){
+                    if( err )throw err;
+                });
+
+            }
+            res.send( 200, parsedSpreadSheet );
+
+        });
     }
     else{
-        res.status( 403 ).send( "Error establishing connection" );
+        res.send( 406, "Error parsing data");
     }
+
 });
 
+
+initializeDatabase();
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

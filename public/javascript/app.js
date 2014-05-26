@@ -8,16 +8,17 @@
 
 
 
-var childCareApp = angular.module('childCareApp', ['ui.router', 'ngResource', 'ngCookies', 'mgcrea.ngStrap']);
+var childCareApp = angular.module('childCareApp', ['ui.router', 'ngSanitize', 'ngResource', 'ngCookies',  'mgcrea.ngStrap']);
 childCareApp.constant( 'minimumActivityTime', 900000 );
 childCareApp.config( function(  $stateProvider, $urlRouterProvider){
     $stateProvider
         .state( 'home'                      , { url : '/home'               , templateUrl : 'views/home.html'       , controller : HomeController } )
         .state( 'listing'                   , { url : '/listing'            , templateUrl : 'views/listing.html'})
         .state( 'listing.how-we-started'    , { url : '/how-we-started'     , templateUrl : 'views/how-we-started.html'})
-        .state( 'listing.reviews'           , { url : '/reviews'            , templateUrl : 'views/reviews.html'})
+        .state( 'listing.reviews'           , { url : '/reviews'            , templateUrl : 'views/reviews.html', controller : ReviewController})
         .state( 'listing.contact'           , { url : '/contact'            , templateUrl : 'views/contact.html'    , controller : ContactController })
         .state( 'join'                      , { url : '/join'               , templateUrl : '/views/join.html'      , controller : JoinController } )
+        .state( 'load'                      , { url : '/load'               , templateUrl : '/views/load-sites.html'      , controller : LoadController } )
         .state( 'login'                     , { url : '/login'              , templateUrl : 'views/login.html'      , controller : LoginController } );
     $urlRouterProvider.otherwise('home');
 
@@ -83,19 +84,6 @@ childCareApp.run( function($rootScope, $cookieStore, minimumActivityTime ){
 
 });
 
-
-
-
-function TestController( $scope ){
-    var listing = {
-        'home' : {
-            include : 'views/panes/home.html'
-        }
-    };
-
-    $scope.title = "title";
-
-}
 
 childCareApp.controller( 'ListingsController', function($scope, Listings){
         $scope.listings = [];

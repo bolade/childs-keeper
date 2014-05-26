@@ -1,0 +1,36 @@
+<div>
+    <div data-ng-form="fileUpload">
+        <div class="row">
+            <div class="col-md-2 text-right">
+                <label>Load File</label>
+            </div>
+            <div class="col-md-6">
+                <span class="btn btn-default fileinput-button">
+                    <i class="fa fa-plus"></i>
+                    <span>Add</span>
+                    <input type="file" name="files[]" data-file-upload ng-disabled="disableFileSelect" data-file-info="viewModel.data.fileContents" data-supported-types="xls">
+                </span>
+                <span style="margin-left: 20px">
+                     <span style="font-weight: bold; color: red" data-ng-if="viewModel.data.fileContents.error">{{viewModel.data.fileContents.error}}</span>
+                     <span data-ng-if="viewModel.data.fileContents.name" >{{viewModel.data.fileContents.name}}</span>
+                </span>
+
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-offset-2 col-md-3">
+                <label class="radio-inline">
+                    <input type="radio" data-ng-model="viewModel.data.upload" data-ng-value="1" >Reload
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" data-ng-model="viewModel.data.upload" data-ng-value="0" >Update
+                </label>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-1 col-md-offset-2">
+                <button class="btn btn-default" data-ng-click="submitFile()" data-ng-disabled="!viewModel.data.fileContents.contents">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

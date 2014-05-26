@@ -19,22 +19,29 @@
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="subject" placeholder="User Name" data-ng-model="viewModel.data.userName" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
                 </div>
+                <div class="col-sm-3" data-ng-if="viewModel.display.error">
+                    <div class="alert alert-danger">{{ viewModel.display.error }}</div>
+                </div>
             </div>
             <div class="form-group">
                 <label for="password" class="col-sm-2 control-label">Password</label>
                 <div class="col-sm-6">
-                    <input type="password" class="form-control" id="password" placeholder="Password" data-ng-model="viewModel.data.password" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                    <input type="password" class="form-control" id="password" name="password"  placeholder="Password" data-ng-model="viewModel.data.password" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
                 </div>
             </div>
             <div class="form-group">
                 <label for="password" class="col-sm-2 control-label">Confirm Password</label>
                 <div class="col-sm-6">
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" data-ng-model="viewModel.data.confirmPassword" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" validate-equals="viewModel.data.password"
+                           data-ng-model="viewModel.data.confirmPassword" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                </div>
+                <div class="col-sm-3" data-ng-show="invalidPasswordState()">
+                    <div class="alert alert-danger"><strong>Error! </strong>Passwords do not match</div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-4">
-                    <button type="submit" class="btn btn-default" data-ng-disabled="signUpForm.$invalid && viewModel.display.saving" data-ng-click="submit()">
+                    <button type="submit" class="btn btn-default" data-ng-disabled="signUpForm.$invalid || viewModel.display.saving" data-ng-click="submit()">
                         <span data-ng-if="viewModel.display.saving">Saving...</span>
                         <span data-ng-if="!viewModel.display.saving">Submit</span>
                     </button>
