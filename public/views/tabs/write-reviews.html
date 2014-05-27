@@ -1,3 +1,16 @@
-<div>
-    Write Reviews
+<div style="margin-top: 50px">
+    <div class="row">
+        <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="Child Care Center" data-ng-model="viewModel.childCareCenter"
+                    data-ng-options="center.name as center.name for center in getMatchingListings($viewValue)" bs-typeahead>
+        </div>
+        <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="Zip Code" data-ng-model="viewModel.zipCode">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default" type="submit">Search</button>
+        </div>
+    </div>
+
+
 </div>

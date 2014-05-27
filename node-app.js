@@ -268,6 +268,37 @@ app.post('/load', function( req, res ){
     }
 
 });
+app.get('/search', function( req, res ){
+   var term = req.query.term;
+
+    mongoClient.connect( mongoUrl, function( err, db ){
+        var collection = db.collection( "child-care-centers" );
+        if( term ){
+            var regex = new RegExp( term, 'i' );
+            collection.find( {name : regex}).limit(MAX_LISTINGS).toArray( function( err, results){
+                if( err ){
+                    res.status( 403 ).send( "Error establishing connection" );
+                }
+                else{
+                    res.status( 200 ).json(results) ;
+                }
+            });
+
+        }
+        else{
+            collection.find().limit(MAX_LISTINGS).toArray( function(err, results){
+                if( err ){
+                    res.status( 403 ).send( "Error establishing connection" );
+                }
+                else{
+                    res.status( 200 ).json(results) ;
+                }
+            });
+        }
+
+    });
+
+});
 
 
 initializeDatabase();
