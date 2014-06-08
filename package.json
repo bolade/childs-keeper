@@ -14,6 +14,10 @@
     "passport-local": "~1.0.0",
     "connect-flash": "~0.1.1",
     "node-xlsx": "~0.4.0",
-    "xlsx": "~0.7.3"
+    "xlsx": "~0.7.3",
+    "mongo-postal": "0.0.4",
+    "mongoskin": "~1.4.4",
+    "optimist": "~0.6.1",
+    "csv": "~0.4.0"
   }
 }

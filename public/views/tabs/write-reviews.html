@@ -1,16 +1,52 @@
 <div style="margin-top: 50px">
     <div class="row">
         <div class="col-md-5">
+            <!--<input type="text" class="form-control" placeholder="Child Care Center" data-ng-model="viewModel.childCareCenter"
+                    data-ng-options="center as center.name for center in getMatchingListings($viewValue)" bs-typeahead object-input>-->
             <input type="text" class="form-control" placeholder="Child Care Center" data-ng-model="viewModel.childCareCenter"
-                    data-ng-options="center.name as center.name for center in getMatchingListings($viewValue)" bs-typeahead>
-        </div>
-        <div class="col-md-5">
-            <input type="text" class="form-control" placeholder="Zip Code" data-ng-model="viewModel.zipCode">
+                   typeahead="center as center.name for center in getMatchingListings($viewValue)">
         </div>
         <div class="col-md-2">
-            <button class="btn btn-default" type="submit">Search</button>
+            <input type="text" class="form-control" placeholder="Zip Code" data-ng-model="viewModel.zipCode">
+        </div>
+        <div class="col-md-3">
+            <select ui-select2="{allowClear:true}" data-ng-model="viewModel.radius" data-placeholder="Enter Radius" style="width:100%">
+                <option value=""></option>
+                <option value="5">5 miles</option>
+                <option value="10">10 miles</option>
+                <option value="20">20 miles</option>
+                <option value="50">50 miles</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default" type="submit" data-ng-click="search()">Search</button>
         </div>
     </div>
+    <div data-ng-if="viewModel.searching">
+        <div class="row">
+            <div class="col-md-12">
+                <div us-spinner="{ top : '50%', radius : 50, lines : 26 }"></div>
+            </div>
+        </div>
+    </div>
+    <div data-ng-if="!viewModel.searching">
+        <div class="row" data-ng-if="viewModel.childCareCenters.length > 0 " style="margin-top: 15px">
+            <table class="table">
+                <tr data-ng-repeat="center in viewModel.childCareCenters">
+                    <td>{{center.name}}</td>
+                    <td>{{center.address}}</td>
+                    <td>{{center.city}}</td>
+                    <td>{{center.state}}</td>
+                    <td>
+                        <div rating ng-model="center.review"></div>
+                    </td>
+                </tr>
 
+            </table>
+            <div class="col-md-2">
+                {{viewModel.childCareCenter.name}}
+            </div>
+        </div>
+    </div>
 
 </div>

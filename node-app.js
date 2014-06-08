@@ -12,6 +12,7 @@ var path = require('path');
 var passport =require('passport');
 var flash = require('connect-flash');
 var _ = require('underscore');
+var mongoPostal = require('mongo-postal');
 
 var XLSX  = require('xlsx');
 
@@ -110,7 +111,7 @@ function findByUserName(userName, fn) {
 function parseBinarySpreadSheet( fileContents ){
     function cellRawText(cell){
         if( cell ){
-            return cell.v;
+            return String(cell.v);
         }
         else{
             return '';
@@ -300,6 +301,42 @@ app.get('/search', function( req, res ){
 
 });
 
+app.get( '/postal-search', function( req, res ){
+    var zipcode = req.query[ 'zip-code'];
+    if( zipcode ){
+        mongoClient.connect( mongoUrl, function( err, db ){
+            var postalCollection = db.collection( "postal_codes" );
+            var childCareCenters = db.collection( "child-care-centers");
+            var params = {
+                dbCollection : postalCollection,
+                zipcode : zipcode,
+                radiusMiles : req.query.radius || 10
+            };
+            mongoPostal.findPostals( params, function(err, postals){
+                if( err ) throw err;
+                if( postals.length > 0 ){
+                    var zipcodes = _(postals).map( function(postal){
+                        return postal.zipcode;
+                    });
+                    console.log( "zip codes : ");
+                    console.log( zipcodes );
+                    childCareCenters.find( { zipCode : { "$in" : zipcodes  } }).toArray( function( err, results){
+                        if( err ) throw err;
+                        res.send( 200, results );
+                    });
+                }
+                else{
+                    res.send( 200, [] );
+                }
+
+            })
+        });
+
+    }
+    else{
+        res.send( 401, 'Invalid request');
+    }
+});
 
 initializeDatabase();
 

@@ -8,7 +8,7 @@
 
 
 
-var childCareApp = angular.module('childCareApp', ['ui.router', 'ngSanitize', 'ngResource', 'ngCookies',  'mgcrea.ngStrap']);
+var childCareApp = angular.module('childCareApp', ['ui.router', 'ngSanitize', 'ngResource', 'ngCookies',  'ui.bootstrap', 'ui.select2', 'angularSpinner', 'mgcrea.ngStrap']);
 childCareApp.constant( 'minimumActivityTime', 900000 );
 childCareApp.config( function(  $stateProvider, $urlRouterProvider){
     $stateProvider
