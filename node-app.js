@@ -15,7 +15,7 @@ var _ = require('underscore');
 var mongoPostal = require('mongo-postal');
 
 var XLSX  = require('xlsx');
-
+var fs = require('fs');
 
 var mongoClient = require('mongodb').MongoClient;
 var localStrategy = require('passport-local').Strategy;
@@ -26,6 +26,7 @@ var MAX_LISTINGS = 100;
 var mongoUrl = 'mongodb://127.0.0.1:27017/child-keeper';
 
 var app = express();
+var csv = require('fast-csv');
 
 // all environments
 app.set('port', process.env.PORT || 9000);
@@ -49,7 +50,6 @@ function initializeCollection(collectionName, collections, db, fn){
     var collectionNames = _(collections).map(function(collection){
         return collection.collectionName;
     });
-
     if( !_(collectionNames).contains( collectionName ) ){
         if( fn ){
             db.createCollection(collectionName, fn );
@@ -58,6 +58,11 @@ function initializeCollection(collectionName, collections, db, fn){
             db.createCollection(collectionName );
         }
 
+    }
+    else{
+        if( (typeof fn) == "function" ){
+            fn( undefined, db.collection(collectionName));
+        }
     }
 }
 
@@ -71,10 +76,80 @@ function initializeDatabase(){
                initializeCollection( "users", collections, db, function(err, collection){
                    if( err )throw err;
                    console.log( "Users collection added");
+                   initializeCollection( "postal_codes", collections, db, function( err, collection ){
+                       if( err ) throw err;
+                       console.log( "Initializing postal codes");
+                       initializeZipcodes( collection );
+                   })
                } );
            })
         });
     });
+}
+
+function initializeZipcodes(collection){
+    console.log( "Collection...");
+    collection.ensureIndex( { zipcode: 1 }, function( err, indexName ){
+        console.log( "Index " + indexName + " created");
+    } );
+    console.log("Ensuring 2d geospatial index on loc");
+    collection.ensureIndex( { loc: "2d" }, { w: 1}, function( err, indexName ){
+        console.log( "Index " + indexName + " created");
+    } );
+    collection.count( function( err, count){
+        if( err )throw err;
+        if( count == 0  ){
+            //something weird
+            console.log( "Database empty. Loading...");
+            var stream = fs.createReadStream( 'data/us-zipcodes/US.txt');
+            csv.fromStream( stream,
+                {
+                    headers :
+                        [ 'country_code', 'postal_code', 'place_name',
+                            'admin_name1', 'admin_code1',
+                            'admin_name2',
+                            'admin_code2',
+                            'admin_name3',
+                            'admin_code3',
+                            'latitude',
+                            'longitude',
+                            'accuracy'
+                        ],
+                    delimiter : '\t'
+
+                } )
+                .transform( function( data ){
+                    return {
+                        country : data.country_code,
+                        zipcode : data.postal_code,
+                        city : data.place_name,
+                        state_long : data.admin_name1,
+                        state_short : data.admin_code1,
+                        // Convert the provided longitude and latitude properties into a mono loc object
+                        // (http://www.mongodb.org/display/DOCS/Geospatial+Indexing)
+                        loc : [
+                            parseFloat(data.longitude),
+                            parseFloat(data.latitude)
+                        ]
+                    };
+                })
+                .on( "record", function(data){
+                    collection.insert( data, { w : 1}, function( err, record ){
+                        if( err ) throw err;
+                        console.log( "Loaded record: " + JSON.stringify( record ));
+                    })
+                })
+                .on( "end", function(){
+                    console.log( "Completed");
+                })
+
+        }
+    });
+
+
+
+
+
 }
 
 
