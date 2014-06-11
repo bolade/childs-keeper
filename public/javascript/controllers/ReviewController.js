@@ -30,7 +30,7 @@ var ReviewController = function( $scope, $http, $timeout ){
                     $timeout( function(){
                         $scope.viewModel.childCareCenters = res.data;
                         $scope.viewModel.searching = false;
-                    }, 2000 );
+                    }, 500 );
 
                 },
                 function(err){
