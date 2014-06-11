@@ -1,0 +1,21 @@
+<div data-ng-form="reviewForm">
+    <div class="row">
+        <div class="col-md-3">{{center.name}}</div>
+        <div class="col-md-3">
+            <div rating ng-model="center.review"></div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <label>Enter Review
+            </label>
+            <textarea class="form-control" style="width: 100%" data-ng-model="center.comments"></textarea>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 15px">
+        <div class="col-md-2">
+            <button class="btn btn-default" data-ng-click="submitReview()">Submit!</button>
+        </div>
+    </div>
+</div>

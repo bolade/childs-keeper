@@ -18,6 +18,7 @@ var XLSX  = require('xlsx');
 var fs = require('fs');
 
 var mongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 var localStrategy = require('passport-local').Strategy;
 
 var collectionName = 'child-care-centers';
@@ -374,6 +375,40 @@ app.get('/search', function( req, res ){
 
     });
 
+});
+
+app.get( '/reviews/:reviewId', function( req, res ){
+
+    mongoClient.connect( mongoUrl, function( err, db ){
+        var collection = db.collection( "child-care-centers" );
+        console.log( "Review id : " + req.params.reviewId );
+        collection.findOne( { _id : ObjectID( req.params.reviewId )}, function( err, data){
+            if( err )throw err;
+            console.log( data );
+            res.send( 200, data )
+        } );
+    } );
+});
+app.post( '/reviews/:reviewId', function( req, res ){
+
+    mongoClient.connect( mongoUrl, function( err, db ){
+        var collection = db.collection( "child-care-centers" );
+        console.log( "Review id : " + req.params.reviewId );
+        var review = {
+            comments : req.body.comments,
+            review : req.body.review
+        };
+
+        collection.update(
+            { _id : ObjectID( req.params.reviewId) },
+            { $push : { reviews : { $each : [ review ] } } },
+            function( err, add ){
+                if( err ) res.send( 401, "Error saving review");
+                console.log( "Saved review : " + JSON.stringify( review ));
+                res.send( 200, "Review Saved!" );
+            }
+        )
+    } );
 });
 
 app.get( '/postal-search', function( req, res ){

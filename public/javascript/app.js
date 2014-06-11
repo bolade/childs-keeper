@@ -19,7 +19,8 @@ childCareApp.config( function(  $stateProvider, $urlRouterProvider){
         .state( 'listing.contact'           , { url : '/contact'            , templateUrl : 'views/contact.html'    , controller : ContactController })
         .state( 'join'                      , { url : '/join'               , templateUrl : '/views/join.html'      , controller : JoinController } )
         .state( 'load'                      , { url : '/load'               , templateUrl : '/views/load-sites.html'      , controller : LoadController } )
-        .state( 'login'                     , { url : '/login'              , templateUrl : 'views/login.html'      , controller : LoginController } );
+        .state( 'login'                     , { url : '/login'              , templateUrl : 'views/login.html'      , controller : LoginController } )
+        .state( 'review'                    , { url : '/reviews/:reviewId'             , templateUrl : '/views/edit-review.html'    , controller : WriteReviewController });
     $urlRouterProvider.otherwise('home');
 
 });
