@@ -24,7 +24,7 @@ var localStrategy = require('passport-local').Strategy;
 var collectionName = 'child-care-centers';
 var MAX_LISTINGS = 100;
 
-var mongoUrl = 'mongodb://127.0.0.1:27017/child-keeper';
+var mongoUrl = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/child-keeper';
 
 var app = express();
 var csv = require('fast-csv');
@@ -345,6 +345,11 @@ app.post('/load', function( req, res ){
     }
 
 });
+app.get('/init', function(req, res){
+    initializeDatabase();
+    res.send( 200, "Database initialized");
+});
+
 app.get('/search', function( req, res ){
    var term = req.query.term;
 
@@ -448,7 +453,6 @@ app.get( '/postal-search', function( req, res ){
     }
 });
 
-initializeDatabase();
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
