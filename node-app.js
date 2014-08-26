@@ -25,6 +25,7 @@ var collectionName = 'child-care-centers';
 var MAX_LISTINGS = 100;
 
 var mongoUrl = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/child-keeper';
+console.log( "Mongo Url : " + mongoUrl );
 
 var app = express();
 var csv = require('fast-csv');
@@ -48,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 function initializeCollection(collectionName, collections, db, fn){
+
     var collectionNames = _(collections).map(function(collection){
         return collection.collectionName;
     });
@@ -69,6 +71,7 @@ function initializeCollection(collectionName, collections, db, fn){
 
 
 function initializeDatabase(){
+    console.log( "Initializing database...");
     mongoClient.connect( mongoUrl, function(err,db){
         db.collections( function( err, collections ){
            if( err ) throw err;
