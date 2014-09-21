@@ -27,7 +27,7 @@ childCareApp.config( function(  $stateProvider, $urlRouterProvider){
 childCareApp.factory( 'Listings', function($resource){
     return $resource('/listing/:id');
 });
-childCareApp.run( function($rootScope, $cookieStore, minimumActivityTime ){
+childCareApp.run( function($rootScope, $cookieStore, $sce, minimumActivityTime ){
    $rootScope.loginModal = {
        title : "Login",
        content : "Sample Content"
@@ -39,6 +39,13 @@ childCareApp.run( function($rootScope, $cookieStore, minimumActivityTime ){
             home : { 'active' : true}
         }
     };
+    var recaptchaPublicKey =  '6LcsAvkSAAAAANJh4HGPYuTmEcUbRADFjrt8i8vo';
+    $rootScope.recaptcha = {
+
+        noScriptUrl : $sce.trustAsResourceUrl( 'http://www.google.com/recaptcha/api/noscript?k=' + recaptchaPublicKey ),
+        challengeUrl : $sce.trustAsResourceUrl('http://www.google.com/recaptcha/api/challenge?k=' + recaptchaPublicKey )
+
+};
 
 
     $rootScope.validUser = undefined;

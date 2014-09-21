@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><h5><span style="color: red">S</span>ign Up!</h5></div>
     <div class="panel-body">
-        <div data-ng-form="signUpForm" class="form-horizontal" role="form" novalidate>
+        <form name="signupForm" class="form-horizontal" role="form" novalidate>
             <div class="form-group">
                 <label for="userName" class="col-sm-2 control-label">User Name</label>
                 <div class="col-sm-6">
@@ -23,10 +23,10 @@
             <div class="form-group">
                 <label for="emailAddress" class="col-sm-2 control-label">Email Address</label>
                 <div class="col-sm-6">
-                    <input type="email" class="form-control" id="emailAddress" placeholder="Email Address" data-ng-model="viewModel.data.emailAddress" data-ng-required="true" data-ng-disabled="viewModel.display.saving" >
+                    <input type="email" class="form-control ng-unique" id="emailAddress" name="emailAddress" placeholder="Email Address" data-ng-model="viewModel.data.emailAddress" data-ng-required="true" data-ng-disabled="viewModel.display.saving" >
                 </div>
-                <div class="col-sm-3" data-ng-if="viewModel.display.error">
-                    <div class="alert alert-danger">{{ viewModel.display.error }}</div>
+                <div class="col-sm-3" data-ng-show="showError(signupForm.emailAddress, 'emailAddress')">
+                    <div class="alert alert-danger">The Email Address is invalid</div>
                 </div>
             </div>
             <div class="form-group">
@@ -73,7 +73,7 @@
                 <label for="password" class="col-sm-2 control-label">Confirm Password</label>
                 <div class="col-sm-6">
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" validate-equals="viewModel.data.password"
-                           data-ng-model="viewModel.data.confirmPassword" data-ng-required="true" data-ng-disabled="viewModel.display.saving">
+                           data-ng-model="viewModel.data.confirmPassword" data-ng-required="true" data-ng-disabled="viewModel.display.saving || !viewModel.data.password">
                 </div>
                 <div class="col-sm-3" data-ng-show="invalidPasswordState()">
                     <div class="alert alert-danger"><strong>Error! </strong>Passwords do not match</div>
@@ -88,7 +88,6 @@
                     <button type="reset" class="btn btn-default" data-ng-click="reset()" data-ng-disabled="viewModel.display.saving">Reset</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-
 </div>

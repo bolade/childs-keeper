@@ -43,3 +43,7 @@
 .modal-backdrop.am-fade.ng-enter.ng-enter-active {
     opacity: .5;
 }
+
+/*input.ng-pristine { border: solid dodgerblue 1px; }*/
+/*input.ng-dirty { border: solid black 3px; }*/
+input.ng-invalid.ng-dirty.ng-unique { border : solid red 2px;}

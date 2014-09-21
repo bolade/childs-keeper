@@ -31,6 +31,9 @@ var JoinController = function( $scope, $http, $state  ){
                $scope.viewModel.display.error = error;
            })
     }
+    $scope.showError = function(ngModelController, error){
+        return ngModelController.$invalid && ngModelController.$dirty;
+    }
 
 
 }
